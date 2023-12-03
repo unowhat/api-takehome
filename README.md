@@ -1,7 +1,7 @@
 # Welcome!
 Please complete Part 1 and Part 2 of the MarketDial take home challenge. 
 ## Part 1
-The purpose of part 1 is to create a small Python server that can interact with a PostgreSQL database. This server is built in a docker container and can be run using the command `docker compose up`. Once the server has started you should be able to run `curl localhost:8000` or 'Invoke-WebRequest -Uri "http://localhost:8000"' in PowerShell. which should return 
+The purpose of part 1 is to create a small Python server that can interact with a PostgreSQL database. This server is built in a docker container and can be run using the command `docker compose up`. Once the server has started you should be able to run `curl localhost:8000` or (`Invoke-WebRequest -Uri "http://localhost:8000"`) in PowerShell. which should return 
 ```json
 {"message":"Hello World"}
 ```
