@@ -93,7 +93,7 @@ ___
 
 ## Part 2
 
-The file titled `bad_code.py` has code in it that needs to be improved. Your job is to improve it as you see fit.
+The file titled `bad_code.py` has code in it that needs to be improved. This script is designed to automate the process of generating and sending reports. Your job is to improve it as you see fit.
 
 Files that can be edited: 
 - bad_code.py
