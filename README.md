@@ -1,7 +1,7 @@
 # Welcome!
 Please complete Part 1 and Part 2 of the MarketDial take home challenge. 
 ## Part 1
-The purpose of part 1 is to create a small Python server that can interact with a PostgreSQL database. This server is built in a docker container and can be run using the command `docker compose up`. Once the server has started you should be able to run `curl localhost:8000` which should return 
+The purpose of part 1 is to create a small Python server that can interact with a PostgreSQL database. This server is built in a docker container and can be run using the command `docker compose up`. Once the server has started you should be able to run `curl localhost:8000` ('Invoke-WebRequest -Uri "http://localhost:8000"' in PowerShell)which should return 
 ```json
 {"message":"Hello World"}
 ```
@@ -34,7 +34,7 @@ All Products
         Vegetables
 ```
 
-Create whatever tables are needed to store this information in your database and populate them with the data above. It would be useful to include a unique id for each item in the database (we'll use it later in the API server to lookup individual products and categories). 
+Create whatever tables and additional files for better organization to store this information in your database and populate them with the data above. It would be useful to include a unique id for each item in the database (we'll use it later in the API server to lookup individual products and categories). 
 
 Note: you can open a tool to view the database with this command: 
 `docker exec -it server bash -c 'PGPASSWORD=password123 psql -U demouser -h db demo'`
