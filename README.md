@@ -85,7 +85,7 @@ This route would take a category id and return the average price for that catego
 ## Task 5 - CRUD routes, Testing 
 Optionally (time permitting. Not required, but very nice to have) - add additional routes which can be used to create, read, update, or delete products and categories. How would you test your API? Bonus points for working pytests.
 
-## Task 5 - Lessons learned, room for improvement?
+## Task 6 - Lessons learned, room for improvement?
 You can answer during your interview, but we'd like to know: What problems did you encounter?, how did you solve them? What design tradeoffs did you make? Given more time how could you improve your project (improve its performance, make it more usable, maintainable, testable, etc.)? 
 
 ___
