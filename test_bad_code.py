@@ -1,9 +1,9 @@
 #!/usr/local/bin/python3
 
+import copy
 import csv
 import os
 import unittest
-import copy
 
 import bad_code
 

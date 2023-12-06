@@ -1,3 +1,5 @@
+-- USAGE: In psql CLI, execute \i queries/seed_tables.sql
+
 -- seeding departments
 INSERT INTO departments (department_name) VALUES ('Bakery'), ('Produce');
 

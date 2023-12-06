@@ -5,9 +5,9 @@ from models.product import Product
 from models.category import Category
 from models.department import Department
 
-app = FastAPI()
-
 DATABASE_URL = "postgresql://demouser:password123@db:5432/demo"
+
+app = FastAPI()
 
 database = Database(DATABASE_URL)
 
@@ -40,6 +40,7 @@ async def get_department_average_price(department_id: int):
     rows = await database.fetch_one(query=query, values={'department_id':department_id})
     return rows
 
+# CRUD for Products
 @app.post("/product/")
 async def create_product(product: Product):
     query = '''INSERT INTO products (product_name, category_id, price) 
@@ -110,6 +111,7 @@ async def delete_products(product_id: int):
 
     return "Success"
 
+# CRUD for Categories
 @app.post("/category/")
 async def create_category(category: Category):
     query = '''INSERT INTO categories (category_name, department_id) 
