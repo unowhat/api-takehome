@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from databases import Database
 
 from models.product import Product
+from models.category import Category
+from models.department import Department
 
 app = FastAPI()
 
@@ -80,8 +82,8 @@ async def update_product(product_id: int, product: Product):
     )
 
     query = '''UPDATE products
-         SET product_name=:product_name, category_id=:category_id, price=:price 
-         WHERE product_id=:product_id;'''
+        SET product_name=:product_name, category_id=:category_id, price=:price 
+        WHERE product_id=:product_id;'''
     
     await database.execute(
         query=query, 
@@ -97,7 +99,7 @@ async def update_product(product_id: int, product: Product):
 
 @app.delete("/product/{product_id}")
 async def delete_products(product_id: int):
-    query = '''DELETE FROM products WHERE product_id=:product_id;'''
+    query = 'DELETE FROM products WHERE product_id=:product_id;'
     
     await database.execute(
         query=query, 
@@ -107,3 +109,71 @@ async def delete_products(product_id: int):
     )
 
     return "Success"
+
+@app.post("/category/")
+async def create_category(category: Category):
+    query = '''INSERT INTO categories (category_name, department_id) 
+        SELECT :category_name, department_id FROM departments WHERE department_name=:department_name;'''
+    
+    await database.execute(
+        query=query, 
+        values={
+            'category_name': category.name, 
+            'department_name': category.department
+        }
+    )
+
+    return "Success"
+
+@app.get("/category/{category_id}")
+async def get_category(category_id: int):
+    query = ''' SELECT c.category_id, c.category_name, d.department_id, d.department_name
+        FROM categories AS c LEFT JOIN departments AS d ON c.department_id=d.department_id 
+        WHERE category_id=:category_id;'''
+    
+    rows = await database.fetch_one(
+        query=query, 
+        values={
+            'category_id': category_id
+        }
+    )
+
+    return rows
+
+@app.put("/category/{category_id}")
+async def update_category(category_id: int, category: Category):
+    department_id_query = 'SELECT department_id FROM departments WHERE department_name=:department_name'
+    rows = await database.fetch_one(
+        query=department_id_query,
+        values={
+            'department_name': category.department 
+        }
+    )
+
+    query = ''' UPDATE categories
+        SET category_name=:category_name, department_id=:department_id
+        WHERE category_id=:category_id;'''
+    
+    await database.execute(
+        query=query, 
+        values={
+            'category_id': category_id,
+            'category_name': category.name,
+            'department_id': rows['department_id']
+        }
+    )
+
+    return 'Success'
+
+@app.delete("/category/{category_id}")
+async def delete_category(category_id: int):
+    query = 'DELETE FROM categories WHERE category_id=:category_id;'
+    
+    await database.execute(
+        query=query, 
+        values={
+            'category_id': category_id
+        }
+    )
+
+    return 'Success'
