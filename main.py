@@ -27,6 +27,8 @@ async def root():
 async def get_products():
     query = 'SELECT product_name AS product, price FROM products'
     rows = await database.fetch_all(query=query)
+    if rows == None:
+        return 'No products'
     return rows
 
 @app.get("/category/{department_id}/avg-price")
@@ -38,6 +40,8 @@ async def get_department_average_price(department_id: int):
         GROUP BY d.department_name'''
     
     rows = await database.fetch_one(query=query, values={'department_id':department_id})
+    if rows == None:
+        return 'Invalid department id'
     return rows
 
 # CRUD for Products
