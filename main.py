@@ -1,8 +1,7 @@
 from fastapi import FastAPI
-# from products import get_all_products
-# from sqlalchemy import create_engine, select
-# from sqlalchemy.orm import sessionmaker
 from databases import Database
+
+from models.product import Product
 
 app = FastAPI()
 
@@ -29,7 +28,7 @@ async def get_products():
     return rows
 
 @app.get("/category/{department_id}/avg-price")
-async def get_products(department_id: int):
+async def get_department_average_price(department_id: int):
     query = '''SELECT department_name, AVG(price) AS average_price 
         FROM products AS p LEFT JOIN categories AS c ON p.category_id=c.category_id 
         LEFT JOIN departments AS d ON c.department_id=d.department_id
@@ -38,3 +37,73 @@ async def get_products(department_id: int):
     
     rows = await database.fetch_one(query=query, values={'department_id':department_id})
     return rows
+
+@app.post("/product/")
+async def create_product(product: Product):
+    query = '''INSERT INTO products (product_name, category_id, price) 
+         SELECT :product_name, category_id, :price FROM categories WHERE category_name=:category_name;'''
+    
+    await database.execute(
+        query=query, 
+        values={
+            'product_name': product.name, 
+            'category_name': product.category, 
+            'price': product.price
+        }
+    )
+
+    return "Success"
+
+@app.get("/product/{product_name}")
+async def get_product(product_name: str):
+    query = '''SELECT p.product_id, p.product_name, c.category_name, p.price 
+        FROM products AS p LEFT JOIN categories AS c ON p.category_id=c.category_id  
+        WHERE p.product_name=:product_name;'''
+    
+    rows = await database.fetch_one(
+        query=query, 
+        values={
+            'product_name': product_name, 
+        }
+    )
+
+    return rows
+
+@app.put("/product/{product_id}")
+async def update_product(product_id: int, product: Product):
+    category_id_query = '''SELECT category_id FROM categories WHERE category_name=:category_name'''
+    category_id_rows = await database.fetch_one(
+        query=category_id_query, 
+        values={
+            'category_name': product.category, 
+        }
+    )
+
+    query = '''UPDATE products
+         SET product_name=:product_name, category_id=:category_id, price=:price 
+         WHERE product_id=:product_id;'''
+    
+    await database.execute(
+        query=query, 
+        values={
+            'product_name': product.name, 
+            'category_id': category_id_rows['category_id'], 
+            'price': product.price,
+            'product_id': product_id
+        }
+    )
+
+    return "Success"
+
+@app.delete("/product/{product_id}")
+async def delete_products(product_id: int):
+    query = '''DELETE FROM products WHERE product_id=:product_id;'''
+    
+    await database.execute(
+        query=query, 
+        values={
+            'product_id': product_id, 
+        }
+    )
+
+    return "Success"
