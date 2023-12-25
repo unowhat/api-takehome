@@ -1,9 +1,8 @@
-#!/usr/local/bin/python3
-
-import copy
+#!/usr/bin/env python3
 import csv
 import os
 import unittest
+import copy
 
 import bad_code
 
